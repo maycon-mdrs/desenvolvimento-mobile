@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 void main() {
   runApp(const MyApp());
@@ -38,15 +39,36 @@ class _MyHomePageState extends State<MyHomePage> {
   String _cpf = '';
   String _address = '';
   String _city = '';
-  late DateTime _birthday;
+  DateTime _dataSelecionada = DateTime.now();
 
-  final List<String> states = [
-    'RN',
-    'RJ',
-    'RS'
-  ]; // Adicione os estados desejados
-  final List<String> countries = ['BRASIL']; // Adicione os países desejados
+  final _dataSelcionadaController = TextEditingController();
 
+  List<DropdownMenuItem> states = [
+    DropdownMenuItem(value: 'RN', child: Text('RN')),	
+    DropdownMenuItem(value: 'RJ', child: Text('RJ')),	
+    DropdownMenuItem(value: 'RS', child: Text('RS')),	
+  ]; 
+
+  List<DropdownMenuItem> countries = [
+    DropdownMenuItem(value: 'BRASIL', child: Text('BRASIL')),	
+    DropdownMenuItem(value: 'USA', child: Text('USA')),
+  ]; 
+
+  _showDatePicker() {
+      showDatePicker(
+              context: context,
+              initialDate: DateTime.now(),
+              firstDate: DateTime.now(),
+              lastDate: DateTime(2024))
+          .then((pickedDate) {
+        if (pickedDate == null) {
+          return;
+        }
+        setState(() {
+          _dataSelcionadaController.text = DateFormat('dd/MM/y').format(pickedDate);
+        });
+      });
+    }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -81,13 +103,13 @@ class _MyHomePageState extends State<MyHomePage> {
               style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
             ),
             TextFormField(
-              decoration: InputDecoration(hintText: 'Name'),
+              decoration: InputDecoration(labelText: 'Name'),
               onSaved: (value) {
                 _firstName = value!;
               },
             ),
             TextFormField(
-              decoration: InputDecoration(hintText: 'Last Name'),
+              decoration: InputDecoration(labelText: 'Last Name'),
               onSaved: (value) {
                 _lastName = value!;
               },
@@ -96,25 +118,23 @@ class _MyHomePageState extends State<MyHomePage> {
               children: [
                 Expanded(
                     child: Column(children: [
-                  TextField(
-                      decoration: InputDecoration(labelText: "Birthday"),
+                  TextFormField(
+                      decoration: InputDecoration(labelText: "Birthday", helperText: "DD/MM/YYYY"),
                       readOnly: true,
-                      onTap: () async {
-                        DateTime? pickedDate = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime.now(),
-                            firstDate: DateTime(2000),
-                            lastDate: DateTime(2101));
-                      })
+                      onTap: _showDatePicker,
+                      controller: _dataSelcionadaController,
+                  ) 
                 ])),
                 
                 SizedBox(width: 16.0), 
                 Expanded(
                   child: TextFormField(
-                    decoration: InputDecoration(labelText: 'CPF'),
+                    decoration: InputDecoration(labelText: 'CPF', helperText: '000.000.000-00'),
                     onSaved: (value) {
                       _cpf = value!;
                     },
+                    keyboardType: TextInputType.number,
+                    maxLength: 11,
                   ),
                 ),
               ],
@@ -130,25 +150,56 @@ class _MyHomePageState extends State<MyHomePage> {
                 _address = value!;
               },
             ),
-            TextFormField(
-              decoration: InputDecoration(labelText: 'Cidade'),
-              onSaved: (value) {
-                _city = value!;
-              },
+            SizedBox(height: 10.0),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: InputDecoration(hintText: 'Cidade'),
+                    onSaved: (value) {
+                      _city = value!;
+                    },
+                  ),
+                ),
+                SizedBox(width: 16.0),
+                Expanded(
+                    child: 
+                    DropdownButtonFormField(
+                      items: states,
+                      onChanged: (value) => {},
+                      itemHeight: 70,
+                      decoration: InputDecoration(hintText: 'Estado'),
+                    )),
+              ],
             ),
-            SizedBox(height: 16.0),
+            SizedBox(height: 10.0),
+            Row(
+              children: [
+                Expanded(
+                  child: TextFormField(
+                    decoration: InputDecoration(hintText: 'CEP', counterText: ''),
+                    onSaved: (value) {
+                      _city = value!;
+                    },
+                    keyboardType: TextInputType.number,
+                    maxLength: 9,
+                  ),
+                ),
+                SizedBox(width: 16.0),
+                Expanded(
+                    child: 
+                    DropdownButtonFormField(
+                      items: countries,
+                      onChanged: (value) => {},
+                      itemHeight: 70,
+                      decoration: InputDecoration(hintText: 'País'),
+                    )),
+              ],
+            ),
+            SizedBox(height: 30),
             ElevatedButton(
-              onPressed: () {
-                if (Form.of(context).validate()) {
-                  Form.of(context).save();
-                  // Faça algo com os dados
-                  print('Nome: $_firstName $_lastName');
-                  print('CPF: $_cpf');
-                  print('Endereço: $_address');
-                  print('Cidade: $_city');
-                }
-              },
-              child: Text('Enviar'),
+              onPressed: () => print('salvar'),
+              child: Text('SALVAR'),
             ),
           ],
         ),

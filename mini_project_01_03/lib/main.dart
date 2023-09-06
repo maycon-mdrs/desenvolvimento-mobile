@@ -19,6 +19,7 @@ class _MainAppState extends State<MainApp> {
   TextEditingController _peso = TextEditingController();
   TextEditingController _altura = TextEditingController();
   String _info = '';
+  String _imc = '';
   String _imagemPath = '';
 
   imcCalculator() {
@@ -30,23 +31,25 @@ class _MainAppState extends State<MainApp> {
       double altura = double.parse(_altura.text);
       double imcCal = peso / ((altura / 100) * (altura / 100));
       String imc = imcCal.toStringAsFixed(1);
+      _imc = 'IMC = $imc';
+
       if (imcCal < 18.5) {
-        _info = 'Abaixo do Peso: $imc';
+        _info = 'Abaixo do Peso';
         _imagemPath = './assets/img/1.png';
       } else if (imcCal >= 18.5 && imcCal < 25) {
-        _info = 'Peso Normal: $imc';
+        _info = 'Peso Normal';
         _imagemPath = './assets/img/2.png';
       } else if (imcCal >= 25 && imcCal < 30) {
-        _info = 'Sobrepeso: $imc';
+        _info = 'Sobrepeso';
         _imagemPath = './assets/img/3.png';
       } else if (imcCal >= 30 && imcCal < 35) {
-        _info = 'Obesidade Grau I: $imc';
+        _info = 'Obesidade Grau I';
         _imagemPath = './assets/img/4.png';
       } else if (imcCal >= 35 && imcCal < 40) {
-        _info = 'Obesidade Grau II: $imc';
+        _info = 'Obesidade Grau II';
         _imagemPath = './assets/img/5.png';
       } else if (imcCal >= 40) {
-        _info = 'Obesidade Mórbida: $imc';
+        _info = 'Obesidade Mórbida';
         _imagemPath = './assets/img/6.png';
       }
     });
@@ -105,6 +108,7 @@ class _MainAppState extends State<MainApp> {
                   ),
                   SizedBox(height: 25),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
                     children: [
                       if (_imagemPath.isNotEmpty) // Verifique se _imagemPath não está vazio
                       Image.asset(
@@ -118,13 +122,32 @@ class _MainAppState extends State<MainApp> {
                         height: 0,          
                       ),
                       SizedBox(height: 25),
-                      Text(
-                        _info,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                      if (_imc.isNotEmpty && _info.isNotEmpty)
+                      Card(
+                        color: Color(0xFF70c5d0),
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Column(
+                            children: [
+                              Text(
+                                _info,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 24,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
+                              ),
+                              Text(
+                                _imc,
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
                       ),
                     ],
@@ -141,6 +164,7 @@ class _MainAppState extends State<MainApp> {
               setState(() {
                 _peso.clear();
                 _altura.clear();
+                _imc = '';
                 _info = '';
                 _imagemPath = '';
               });

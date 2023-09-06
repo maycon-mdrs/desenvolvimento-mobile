@@ -16,75 +16,136 @@ class MainApp extends StatefulWidget {
 }
 
 class _MainAppState extends State<MainApp> {
-  @override
-  Widget build(BuildContext context) {
+  TextEditingController _peso = TextEditingController();
+  TextEditingController _altura = TextEditingController();
+  String _info = '';
+  String _imagemPath = '';
 
-    TextEditingController _peso = TextEditingController();
-    TextEditingController _altura =TextEditingController();
-    String imc = '';
-
-    imcCalculator() {
+  imcCalculator() {
+    // Fechar o teclado
+    FocusManager.instance.primaryFocus?.unfocus(); // Fecha o teclado numérico
+    
+    setState(() {
       double peso = double.parse(_peso.text);
       double altura = double.parse(_altura.text);
-      double imcCal = peso / ((altura/100 ) * (altura/100));
+      double imcCal = peso / ((altura / 100) * (altura / 100));
+      String imc = imcCal.toStringAsFixed(1);
+      if (imcCal < 18.5) {
+        _info = 'Abaixo do Peso: $imc';
+        _imagemPath = './assets/img/1.png';
+      } else if (imcCal >= 18.5 && imcCal < 25) {
+        _info = 'Peso Normal: $imc';
+        _imagemPath = './assets/img/2.png';
+      } else if (imcCal >= 25 && imcCal < 30) {
+        _info = 'Sobrepeso: $imc';
+        _imagemPath = './assets/img/3.png';
+      } else if (imcCal >= 30 && imcCal < 35) {
+        _info = 'Obesidade Grau I: $imc';
+        _imagemPath = './assets/img/4.png';
+      } else if (imcCal >= 35 && imcCal < 40) {
+        _info = 'Obesidade Grau II: $imc';
+        _imagemPath = './assets/img/5.png';
+      } else if (imcCal >= 40) {
+        _info = 'Obesidade Mórbida: $imc';
+        _imagemPath = './assets/img/6.png';
+      }
+    });
+  }
 
-      setState(() {
-        imc = imcCal.toStringAsFixed(1);
-      });
-      print(imc);
-    }
-
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData().copyWith(
+        colorScheme: ThemeData().colorScheme.copyWith(
+          primary: const Color.fromARGB(255, 39, 176, 121),
+          secondary: Colors.blue,
+      )),
       home: Scaffold(
         appBar: AppBar(
-          title: Text('IMC'),
+          title: Text('IMC Calculadora'),
         ),
         body: Padding(
           padding: EdgeInsets.all(10),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
+          child: ListView(
             children: [
-              Row(
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  Expanded(
-                    child: TextField(
-                      controller: _peso,
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        labelText: 'Peso (kg)',
-                        hintText: 'Digite seu peso',
+                  Row(
+                    children: [
+                      Expanded(
+                        child: TextFormField(
+                          controller: _peso,
+                          keyboardType: TextInputType.number,
+                          maxLength: 6,
+                          decoration: InputDecoration(
+                            labelText: 'Peso (kg)',
+                            hintText: 'Digite seu peso',
+                          ),
+                        ),
                       ),
-                    ),
-                  ),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: TextField(
-                      controller: _altura,
-                      keyboardType: TextInputType.number, 
-                      decoration: InputDecoration(
-                        labelText: 'Altura (cm)',
-                        hintText: 'Digite sua altura',
+                      SizedBox(width: 20),
+                      Expanded(
+                        child: TextField(
+                          controller: _altura,
+                          keyboardType: TextInputType.number,
+                          maxLength: 3,
+                          decoration: InputDecoration(
+                            labelText: 'Altura (cm)',
+                            hintText: 'Digite sua altura',
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
+                  SizedBox(height: 25),
+                  ElevatedButton(
+                    onPressed: imcCalculator,
+                    child: Text('CALCULAR'),
+                  ),
+                  SizedBox(height: 25),
+                  Column(
+                    children: [
+                      if (_imagemPath.isNotEmpty) // Verifique se _imagemPath não está vazio
+                      Image.asset(
+                        _imagemPath,
+                        height: 250,
+                      ),
+                      if (_imagemPath.isNotEmpty) // Verifique se _imagemPath não está vazio
+                      Divider(
+                        color: Color(0xFF70c5d0), 
+                        thickness: 4,       
+                        height: 0,          
+                      ),
+                      SizedBox(height: 25),
+                      Text(
+                        _info,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.black87,
+                        ),
+                      ),
+                    ],
+                  )
                 ],
-              ),
-              SizedBox(height: 25),
-              ElevatedButton(
-                onPressed: imcCalculator,
-                child: Text('Calcular'),        
-              ),
-              SizedBox(height: 25),
-              Text(
-                "IMC: $imc",
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: 25,
-                  fontWeight: FontWeight.bold,
-                ),
               ),
             ],
           ),
+        ),
+        floatingActionButton: FloatingActionButton(
+            backgroundColor: Colors.red,
+            onPressed: () {
+              FocusManager.instance.primaryFocus?.unfocus(); // Fecha o teclado numérico
+              setState(() {
+                _peso.clear();
+                _altura.clear();
+                _info = '';
+                _imagemPath = '';
+              });
+            },
+            child: Icon(Icons.delete),
         ),
       ),
     );

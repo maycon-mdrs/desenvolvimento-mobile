@@ -121,7 +121,7 @@ class _MainAppState extends State<MainApp> {
                         thickness: 4,       
                         height: 0,          
                       ),
-                      SizedBox(height: 25),
+                      SizedBox(height: 15),
                       if (_imc.isNotEmpty && _info.isNotEmpty)
                       Card(
                         color: Color(0xFF70c5d0),

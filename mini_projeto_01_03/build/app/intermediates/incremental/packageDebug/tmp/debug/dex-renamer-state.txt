@@ -1,0 +1,4 @@
+#Wed Sep 06 18:13:06 BRT 2023
+base.0=C\:\\Users\\mayco\\OneDrive\\Documentos\\UF\\desenvolvimento-mobile\\mini_project_01_03\\build\\app\\intermediates\\dex\\debug\\mergeDexDebug\\classes.dex
+path.0=classes.dex
+renamed.0=classes.dex

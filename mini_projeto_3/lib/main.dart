@@ -1,8 +1,11 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'dart:ui';
 
 import 'package:f03_lugares/models/place.dart';
 import 'package:f03_lugares/screens/countries_places_screen.dart';
 import 'package:f03_lugares/screens/place_detail_screen.dart';
+import 'package:f03_lugares/screens/place_forms_screen.dart';
 import 'package:f03_lugares/screens/settings_screen.dart';
 import 'package:f03_lugares/screens/tabs_screen.dart';
 import 'package:f03_lugares/utils/app_routes.dart';
@@ -26,20 +29,6 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  List<Place> _favoritePlaces = [];
-
-  void _toggleFavorite(Place place) {
-    setState(() {
-      _favoritePlaces.contains(place)
-          ? _favoritePlaces.remove(place)
-          : _favoritePlaces.add(place);
-    });
-  }
-
-  bool _isFavorite(Place place) {
-    return _favoritePlaces.contains(place);
-  }
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,10 +49,11 @@ class _MyAppState extends State<MyApp> {
       //home: CountriesScreen(),
       initialRoute: '/',
       routes: {
-        AppRoutes.HOME: (ctx) => TabsScreen(_favoritePlaces),
+        AppRoutes.HOME: (ctx) => TabsScreen(),
         AppRoutes.COUNTRY_PLACES: (ctx) => CountryPlacesScreen(),
         AppRoutes.PLACES_DETAIL: (ctx) =>
-            PlaceDetailScreen(_toggleFavorite, _isFavorite),
+            PlaceDetailScreen(),
+        AppRoutes.POST_PLACE: (ctx) => PlaceForms(),
         AppRoutes.SETTINGS: (ctx) => SettingsScreen(),
       },
     );

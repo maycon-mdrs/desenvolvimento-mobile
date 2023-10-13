@@ -4,11 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
-  final Function(Place) onToggleFavorite;
-  final Function(Place) isFavorite;
-
-  const PlaceDetailScreen(this.onToggleFavorite, this.isFavorite);
-
   @override
   Widget build(BuildContext context) {
     final place = ModalRoute.of(context)?.settings.arguments as Place;

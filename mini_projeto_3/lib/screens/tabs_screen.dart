@@ -6,10 +6,6 @@ import 'countries_screen.dart';
 import 'favorite_screen.dart';
 
 class TabsScreen extends StatefulWidget {
-  final List<Place> favoritePlaces;
-
-  const TabsScreen(this.favoritePlaces);
-
   @override
   State<TabsScreen> createState() => _TabsScreenState();
 }

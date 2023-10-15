@@ -1,53 +1,12 @@
-import 'package:f03_lugares/models/place.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'dart:collection';
 import 'package:flutter/material.dart';
+import 'place.dart';
 
-import '../models/country.dart';
-
-const DUMMY_COUNTRIES = const [
-  Country(
-    id: 'c1',
-    title: 'Estanos Unidos',
-    color: Colors.purple,
-  ),
-  Country(
-    id: 'c2',
-    title: 'Canada',
-    color: Colors.red,
-  ),
-  Country(
-    id: 'c3',
-    title: 'Suiça',
-    color: Colors.orange,
-  ),
-  Country(
-    id: 'c4',
-    title: 'Chile',
-    color: Colors.amber,
-  ),
-  Country(
-    id: 'c5',
-    title: 'Espanha',
-    color: Colors.amber,
-  ),
-  Country(
-    id: 'c7',
-    title: 'Peru',
-    color: Colors.lightBlue,
-  ),
-  Country(
-    id: 'c8',
-    title: 'Brasil',
-    color: Colors.lightGreen,
-  ),
-  Country(
-    id: 'c10',
-    title: 'Egito',
-    color: Colors.teal,
-  ),
-];
-
-const DUMMY_PLACES = const [
-  Place(
+class PlacesProvider with ChangeNotifier {
+  List<Place> _places = [
+    Place(
     id: 'p1',
     titulo: 'Praia',
     paises: ['c8', 'c5', 'c9'],
@@ -128,7 +87,20 @@ const DUMMY_PLACES = const [
       '2. Passeios em grupo e com guia',
       '3. Contribua para preservação'
     ],
-    imagemUrl:''
+    imagemUrl:
         'http://www.loumarturismo.com.br/img/passeios-860x600/cataratas-860x600.jpg',
   ),
-];
+  ];
+
+  List<Place> get places => [..._places];
+
+  void addPlace(Place place) {
+    _places.add(place);
+    notifyListeners();
+  }
+
+  void removePlace(String id) {
+    _places.removeWhere((place) => place.id == id);
+    notifyListeners();
+  }
+}

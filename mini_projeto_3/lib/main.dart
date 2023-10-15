@@ -3,6 +3,7 @@
 import 'dart:ui';
 
 import 'package:f03_lugares/models/place.dart';
+import 'package:f03_lugares/models/places_provider.dart';
 import 'package:f03_lugares/screens/countries_places_screen.dart';
 import 'package:f03_lugares/screens/place_detail_screen.dart';
 import 'package:f03_lugares/screens/place_forms_screen.dart';
@@ -16,12 +17,13 @@ import 'models/favorite_places_provider.dart';
 
 import 'screens/countries_screen.dart';
 
-void main() => runApp(
-  ChangeNotifierProvider(
-    create: (ctx) => FavoritePlacesProvider(),
-    child: MyApp(),
-  ),
-);
+void main() => runApp(MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (ctx) => FavoritePlacesProvider()),
+        ChangeNotifierProvider(create: (ctx) => PlacesProvider()),
+      ],
+      child: MyApp()
+    ));
 
 class MyApp extends StatefulWidget {
   @override
@@ -51,8 +53,7 @@ class _MyAppState extends State<MyApp> {
       routes: {
         AppRoutes.HOME: (ctx) => TabsScreen(),
         AppRoutes.COUNTRY_PLACES: (ctx) => CountryPlacesScreen(),
-        AppRoutes.PLACES_DETAIL: (ctx) =>
-            PlaceDetailScreen(),
+        AppRoutes.PLACES_DETAIL: (ctx) => PlaceDetailScreen(),
         AppRoutes.POST_PLACE: (ctx) => PlaceForms(),
         AppRoutes.SETTINGS: (ctx) => SettingsScreen(),
       },

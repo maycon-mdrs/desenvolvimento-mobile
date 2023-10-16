@@ -7,6 +7,7 @@ import 'package:f03_lugares/models/places_provider.dart';
 import 'package:f03_lugares/screens/countries_places_screen.dart';
 import 'package:f03_lugares/screens/place_detail_screen.dart';
 import 'package:f03_lugares/screens/place_forms_screen.dart';
+import 'package:f03_lugares/screens/places_manage.dart';
 import 'package:f03_lugares/screens/settings_screen.dart';
 import 'package:f03_lugares/screens/tabs_screen.dart';
 import 'package:f03_lugares/utils/app_routes.dart';
@@ -55,6 +56,7 @@ class _MyAppState extends State<MyApp> {
         AppRoutes.COUNTRY_PLACES: (ctx) => CountryPlacesScreen(),
         AppRoutes.PLACES_DETAIL: (ctx) => PlaceDetailScreen(),
         AppRoutes.POST_PLACE: (ctx) => PlaceForms(),
+        AppRoutes.PLACES_MANAGE: (ctx) => PlacesManage(),
         AppRoutes.SETTINGS: (ctx) => SettingsScreen(),
       },
     );

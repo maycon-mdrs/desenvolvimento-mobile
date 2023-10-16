@@ -128,7 +128,6 @@ const DUMMY_PLACES = const [
       '2. Passeios em grupo e com guia',
       '3. Contribua para preservação'
     ],
-    imagemUrl:''
-        'http://www.loumarturismo.com.br/img/passeios-860x600/cataratas-860x600.jpg',
+    imagemUrl:'https://blog.maxmilhas.com.br/wp-content/uploads/2019/05/Ba%C3%ADa-de-Ha-Long-Vietn%C3%A3-1024x767.jpg',
   ),
 ];

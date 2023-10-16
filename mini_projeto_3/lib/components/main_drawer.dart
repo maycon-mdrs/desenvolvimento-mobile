@@ -47,6 +47,11 @@ class MainDrawer extends StatelessWidget {
               () => Navigator.of(context)
                   .pushReplacementNamed(AppRoutes.POST_PLACE)),
           _createItem(
+              Icons.edit,
+              'Gerenciar Lugares',
+              () => Navigator.of(context)
+                  .pushReplacementNamed(AppRoutes.PLACES_MANAGE)),
+          _createItem(
               Icons.settings,
               'Configurações',
               () => Navigator.of(context)

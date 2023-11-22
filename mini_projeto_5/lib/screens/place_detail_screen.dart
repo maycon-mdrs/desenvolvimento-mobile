@@ -6,7 +6,7 @@ import '../provider/great_places.dart';
 
 class PlaceDetailScreen extends StatelessWidget {
   const PlaceDetailScreen({super.key});
-  
+
   void _showDeleteDialog(BuildContext context, String placeId) {
     showDialog(
       context: context,
@@ -28,13 +28,13 @@ class PlaceDetailScreen extends StatelessWidget {
               Navigator.of(ctx).pop(); // Fecha o diálogo
               Navigator.of(context).pop(); // Retorna para a tela anterior
               SnackBar(
-            content: Text(
-              'Lugar excluído com sucesso!',
-              textAlign: TextAlign.center,  
-            ),
-            backgroundColor: Colors.red,  
-            behavior: SnackBarBehavior.floating,  
-          );
+                content: Text(
+                  'Lugar excluído com sucesso!',
+                  textAlign: TextAlign.center,
+                ),
+                backgroundColor: Colors.red,
+                behavior: SnackBarBehavior.floating,
+              );
             },
           ),
         ],

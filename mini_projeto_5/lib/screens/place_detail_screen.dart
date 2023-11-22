@@ -27,6 +27,14 @@ class PlaceDetailScreen extends StatelessWidget {
                   .deletePlace(placeId);
               Navigator.of(ctx).pop(); // Fecha o diálogo
               Navigator.of(context).pop(); // Retorna para a tela anterior
+              SnackBar(
+            content: Text(
+              'Lugar excluído com sucesso!',
+              textAlign: TextAlign.center,  
+            ),
+            backgroundColor: Colors.red,  
+            behavior: SnackBarBehavior.floating,  
+          );
             },
           ),
         ],

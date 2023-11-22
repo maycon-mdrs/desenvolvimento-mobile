@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mini_projeto_5/components/image_input.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/great_places.dart';
@@ -82,6 +83,7 @@ class PlaceDetailScreen extends StatelessWidget {
           SizedBox(height: 6),
           Text(place.location!.address),
           SizedBox(height: 10),
+          //ImageInput(initialImage: place.image),
           Text(
               'Coordenadas: ${place.location!.latitude}, ${place.location!.longitude}'),
           SizedBox(height: 10),

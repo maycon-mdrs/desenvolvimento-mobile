@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:path/path.dart' as path;
@@ -16,8 +15,8 @@ class ImageInput extends StatefulWidget {
 }
 
 class _ImageInputState extends State<ImageInput> {
-  //Capturando Imagem
   File? _storedImage;
+
   @override
   void initState() {
     super.initState();
@@ -26,25 +25,38 @@ class _ImageInputState extends State<ImageInput> {
     }
   }
 
-  _takePicture() async {
+  Future<void> _takePicture() async {
     final ImagePicker _picker = ImagePicker();
-    XFile imageFile = await _picker.pickImage(
+    XFile? imageFile = await _picker.pickImage(
       source: ImageSource.camera,
       maxWidth: 600,
-    ) as XFile;
+    );
 
     if (imageFile == null) return;
 
+    _saveImage(imageFile);
+  }
+
+  Future<void> _selectImageFromGallery() async {
+    final ImagePicker _picker = ImagePicker();
+    XFile? imageFile = await _picker.pickImage(
+      source: ImageSource.gallery,
+      maxWidth: 600,
+    );
+
+    if (imageFile == null) return;
+
+    _saveImage(imageFile);
+  }
+
+  Future<void> _saveImage(XFile imageFile) async {
     setState(() {
       _storedImage = File(imageFile.path);
     });
 
-    //pegar pasta que posso salvar documentos
     final appDir = await syspaths.getApplicationDocumentsDirectory();
     String fileName = path.basename(_storedImage!.path);
-    final savedImage = await _storedImage!.copy(
-      '${appDir.path}/$fileName',
-    );
+    final savedImage = await _storedImage!.copy('${appDir.path}/$fileName');
     widget.onSelectImage(savedImage);
   }
 
@@ -59,8 +71,6 @@ class _ImageInputState extends State<ImageInput> {
             border: Border.all(width: 1, color: Colors.grey),
           ),
           alignment: Alignment.center,
-          //child: Text('Nenhuma imagem!'),
-          //verificar se tem imagem
           child: _storedImage != null
               ? Image.file(
                   _storedImage!,
@@ -71,10 +81,19 @@ class _ImageInputState extends State<ImageInput> {
         ),
         SizedBox(width: 10),
         Expanded(
-          child: TextButton.icon(
-            icon: Icon(Icons.camera),
-            label: Text('Tirar foto'),
-            onPressed: _takePicture,
+          child: Column(
+            children: [
+              TextButton.icon(
+                icon: Icon(Icons.camera),
+                label: Text('Tirar foto'),
+                onPressed: _takePicture,
+              ),
+              TextButton.icon(
+                icon: Icon(Icons.image),
+                label: Text('Escolher da Galeria'),
+                onPressed: _selectImageFromGallery,
+              ),
+            ],
           ),
         ),
       ],

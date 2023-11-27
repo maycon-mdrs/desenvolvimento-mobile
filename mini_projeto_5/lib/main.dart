@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mini_projeto_5/provider/auth.dart';
+import 'package:mini_projeto_5/screens/login_page.dart';
 import 'package:mini_projeto_5/screens/place_detail_screen.dart';
 import 'package:mini_projeto_5/screens/place_edit_screen.dart';
 import 'package:provider/provider.dart';
@@ -18,8 +20,11 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return ChangeNotifierProvider(
-      create: (context) => GreatPlaces(),
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (context) => GreatPlaces()),
+        ChangeNotifierProvider(create: (context) => Auth()), // Adiciona o Auth provider
+      ],
       child: MaterialApp(
         title: 'Great Places',
         theme: ThemeData().copyWith(
@@ -27,8 +32,10 @@ class MyApp extends StatelessWidget {
                   primary: Colors.indigo,
                   secondary: Colors.amber,
                 )),
-        home: PlacesListScreen(),
+        home: LoginPage(),
         routes: {
+          AppRoutes.PLACE_LOGIN:(context) => LoginPage(),
+          AppRoutes.PLACE_LIST: (ctx) => PlacesListScreen(),
           AppRoutes.PLACE_FORM: (ctx) => PlaceFormScreen(),
           AppRoutes.PLACE_DETAIL: (ctx) => PlaceDetailScreen(),
           AppRoutes.PLACE_EDIT: (ctx) => PlaceEditScreen(),
